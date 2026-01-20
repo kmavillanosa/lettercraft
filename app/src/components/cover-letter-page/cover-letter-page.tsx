@@ -345,14 +345,6 @@ export function CoverLetterPage() {
 
 	// Group and filter variables based on defaults
 	const groupedVariables = useMemo(() => {
-		// Fields that have defaults configured (personal info only)
-		const defaultFields = ['fullName', 'email', 'phone', 'techStack']
-		
-		// Personal info fields (can be hidden if defaults exist)
-		const personalInfoFields = templateVariables.filter(v => 
-			['fullName', 'email', 'phone'].includes(v.id) && details[v.id as keyof typeof details]?.trim()
-		)
-		
 		// Application details - includes techStack (but techStack can be hidden if default exists)
 		const allApplicationFields = templateVariables.filter(v => 
 			['companyName', 'position', 'date', 'techStack'].includes(v.id)
