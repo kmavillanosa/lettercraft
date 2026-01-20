@@ -8,6 +8,7 @@ import { downloadText } from '../../utils/text-download'
 import { getQueryParams, updateUrlParams } from '../../utils/query-params'
 import { saveDefaults } from '../../utils/local-storage'
 import { FieldType } from '../../types'
+import { SignaturePad } from '../signature-pad/signature-pad'
 import './cover-letter-page.css'
 
 export function CoverLetterPage() {
@@ -42,6 +43,10 @@ export function CoverLetterPage() {
 		fullName: details.fullName,
 		email: details.email,
 		phone: details.phone,
+	})
+	const [signature, setSignature] = useState<string | null>(() => {
+		const saved = localStorage.getItem('lettercraft_signature')
+		return saved || null
 	})
 	const isInitialMount = useRef(true)
 	const updateUrlTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
@@ -151,7 +156,17 @@ export function CoverLetterPage() {
 			phone: formValues.phone || details.phone,
 			companyName: formValues.companyName,
 			position: formValues.position,
+			signature: signature,
 		})
+	}
+
+	const handleSignatureChange = (signatureData: string | null) => {
+		setSignature(signatureData)
+		if (signatureData) {
+			localStorage.setItem('lettercraft_signature', signatureData)
+		} else {
+			localStorage.removeItem('lettercraft_signature')
+		}
 	}
 
 	const handleExportText = () => {
@@ -576,9 +591,15 @@ export function CoverLetterPage() {
 				<div className="settings-panel">
 					<h3>Default Information</h3>
 					<p className="settings-description">
-						Configure your default name, email, and phone. These will be used to pre-fill forms when creating new cover letters.
+						Configure your default name, email, phone, and e-signature. These will be used to pre-fill forms and add to your cover letters.
 					</p>
 					<div className="settings-form">
+						<div className="form-group">
+							<SignaturePad
+								onSignatureChange={handleSignatureChange}
+								initialSignature={signature}
+							/>
+						</div>
 						<div className="form-group">
 							<label htmlFor="settings-fullName" className="form-label">
 								Full Name
