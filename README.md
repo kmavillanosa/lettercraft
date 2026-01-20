@@ -55,7 +55,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed GitHub Pages deployment instru
 ## Project Structure
 
 ```
-jah-bless/
+lettercraft/
 ├── app/                    # Main application directory
 │   ├── src/
 │   │   ├── components/    # React components

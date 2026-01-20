@@ -35,7 +35,7 @@ git push origin main
 3. Wait for it to complete (usually takes 2-3 minutes)
 4. Once complete, your site will be available at:
    ```
-   https://[your-username].github.io/
+   https://[your-username].github.io/lettercraft/
    ```
 
 ## Manual Deployment (Alternative)
@@ -60,17 +60,17 @@ If you prefer to deploy manually:
 
 ### Base Path Issues
 
-If your site is not loading correctly, check the `base` path in `app/vite.config.ts`. For root deployment, it should be:
+If your site is not loading correctly, check the `base` path in `app/vite.config.ts`. It should match your repository name:
 
 ```typescript
-base: '/',
+base: '/lettercraft/',
 ```
 
-If you're deploying to a subdirectory (e.g., `username.github.io/repo-name/`), update this to match your repository name.
+If your repository has a different name, update this value accordingly.
 
 ### 404 Errors
 
-- Ensure the base path in `vite.config.ts` matches your repository name
+- Ensure the base path in `vite.config.ts` is set to `/lettercraft/` to match your repository name
 - Make sure all assets are loading correctly (check browser console)
 - Verify the GitHub Actions workflow completed successfully
 
