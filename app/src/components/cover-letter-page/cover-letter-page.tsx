@@ -5,7 +5,6 @@ import { updateDetails } from '../../store/slices/basic-details-slice'
 import { processTemplate } from '../../utils/template-processor'
 import { generatePDF, generateMarkdownPDF } from '../../utils/pdf-generator'
 import { downloadText } from '../../utils/text-download'
-import { getQueryParams, updateUrlParams } from '../../utils/query-params'
 import { saveDefaults, clearDefaults } from '../../utils/local-storage'
 import { FieldType } from '../../types'
 import { SignaturePad } from '../signature-pad/signature-pad'
@@ -71,36 +70,23 @@ export function CoverLetterPage() {
 	const [showExportDropdown, setShowExportDropdown] = useState(false)
 	const exportDropdownRef = useRef<HTMLDivElement>(null)
 	const isInitialMount = useRef(true)
-	const updateUrlTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
-	// Read query parameters on initial mount only
+	// Initialize form values on mount
 	useEffect(() => {
 		if (isInitialMount.current && templates.length > 0 && variables.length > 0) {
-			const queryParams = getQueryParams()
-			
-			// Set template from query params if provided
-			if (queryParams.template && templates.some((t) => t.id === queryParams.template)) {
-				dispatch(setActiveTemplate(queryParams.template))
-			}
-			
-			// Pre-fill form values from query params
-			// We need to wait for templateVariables to be available
-			const currentTemplate = templates.find((t) => t.id === (queryParams.template || activeTemplateId)) || templates[0]
-			const currentVariables = variables.filter((v) => currentTemplate.variables.includes(v.id))
-			
 			const initial: Record<string, string> = {}
-			currentVariables.forEach((variable) => {
-				// Prefer query param, then details, then default value
-				const queryValue = queryParams[variable.id]
-				const detailValue = details[variable.id as keyof typeof details]
-				const defaultValue = variable.defaultValue || ''
-				initial[variable.id] = queryValue || detailValue || defaultValue
+			templateVariables.forEach((variable) => {
+				// For techStack, use saved value from details if available
+				if (variable.id === 'techStack' && details.techStack) {
+					initial[variable.id] = details.techStack
+				} else {
+					initial[variable.id] = details[variable.id as keyof typeof details] || variable.defaultValue || ''
+				}
 			})
 			setFormValues(initial)
-			
 			isInitialMount.current = false
 		}
-	}, [templates, variables, activeTemplateId, details, dispatch])
+	}, [templates, variables, templateVariables, details, dispatch])
 
 	// Reset form values when template changes (but not on initial mount)
 	// Preserve existing values for fields that exist in both templates
@@ -139,30 +125,6 @@ export function CoverLetterPage() {
 		})
 	}, [details.fullName, details.email, details.phone, details.techStack])
 
-	// Update URL with form values (debounced)
-	useEffect(() => {
-		if (!isInitialMount.current) {
-			// Clear existing timeout
-			if (updateUrlTimeoutRef.current) {
-				clearTimeout(updateUrlTimeoutRef.current)
-			}
-			
-			// Debounce URL updates
-			updateUrlTimeoutRef.current = setTimeout(() => {
-				const params: Record<string, string> = {
-					...formValues,
-					template: activeTemplateId || '',
-				}
-				updateUrlParams(params)
-			}, 500) // Wait 500ms after user stops typing
-		}
-		
-		return () => {
-			if (updateUrlTimeoutRef.current) {
-				clearTimeout(updateUrlTimeoutRef.current)
-			}
-		}
-	}, [formValues, activeTemplateId])
 
 	const processedContent = useMemo(() => {
 		return processTemplate(activeTemplate.content, templateVariables, formValues)

@@ -35,26 +35,39 @@ export function buildUrlWithParams(baseUrl: string, params: Record<string, strin
  * Update the URL with query parameters without reloading the page
  */
 export function updateUrlParams(params: Record<string, string>, replace: boolean = true): void {
-	const url = new URL(window.location.href)
-	
-	// Clear existing params or merge
-	if (replace) {
-		url.search = ''
-	}
-	
-	Object.entries(params).forEach(([key, value]) => {
-		if (value && value.trim()) {
-			url.searchParams.set(key, encodeURIComponent(value.trim()))
-		} else {
-			url.searchParams.delete(key)
+	try {
+		const url = new URL(window.location.href)
+		
+		// Clear existing params or merge
+		if (replace) {
+			url.search = ''
 		}
-	})
-	
-	const newUrl = url.toString()
-	if (replace) {
-		window.history.replaceState({}, '', newUrl)
-	} else {
-		window.history.pushState({}, '', newUrl)
+		
+		// Only add non-empty values to reduce URL size
+		Object.entries(params).forEach(([key, value]) => {
+			if (value && value.trim()) {
+				// Limit value length to prevent extremely long URLs
+				const trimmedValue = value.trim()
+				if (trimmedValue.length <= 200) {
+					url.searchParams.set(key, encodeURIComponent(trimmedValue))
+				}
+			} else {
+				url.searchParams.delete(key)
+			}
+		})
+		
+		const newUrl = url.toString()
+		// Only update if URL actually changed to avoid unnecessary history updates
+		if (newUrl !== window.location.href) {
+			if (replace) {
+				window.history.replaceState({}, '', newUrl)
+			} else {
+				window.history.pushState({}, '', newUrl)
+			}
+		}
+	} catch (error) {
+		// Silently fail if URL update causes issues (e.g., URL too long)
+		console.warn('Failed to update URL params:', error)
 	}
 }
 

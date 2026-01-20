@@ -1,13 +1,23 @@
+/* Optimize global scroll performance */
+html {
+	scroll-behavior: smooth;
+	-webkit-overflow-scrolling: touch;
+}
+
+body {
+	overflow-x: hidden;
+}
+
 .cover-letter-page {
 	min-height: 100vh;
 	padding: 1.25rem 1rem;
 	background: #faf8f3;
-	background-image: 
-		linear-gradient(rgba(139, 115, 85, 0.04) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(139, 115, 85, 0.04) 1px, transparent 1px);
-	background-size: 24px 24px;
 	max-width: 1200px;
 	margin: 0 auto;
+	/* Optimize for scroll performance - promote to GPU layer */
+	transform: translateZ(0);
+	/* Reduce repaints during scroll */
+	backface-visibility: hidden;
 }
 
 .cover-letter-header {
@@ -231,6 +241,10 @@
 	animation: slideDown 0.3s ease-out;
 	max-height: 85vh;
 	overflow-y: auto;
+	/* Optimize scroll performance */
+	will-change: scroll-position;
+	transform: translateZ(0);
+	-webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideDown {
@@ -449,6 +463,9 @@
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 1.5rem;
+	/* Optimize grid rendering during scroll */
+	contain: layout;
+	transform: translateZ(0);
 }
 
 .form-section,
@@ -458,14 +475,16 @@
 	padding: 1.25rem;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 	border: 1.5px solid #e8e4d8;
-	transition: box-shadow 0.3s ease, transform 0.2s ease;
+	transition: box-shadow 0.3s ease;
 	position: relative;
+	/* Optimize for scroll performance */
+	contain: layout style paint;
+	transform: translateZ(0);
 }
 
 .form-section:hover,
 .preview-section:hover {
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-	transform: translateY(-1px);
 }
 
 .missing-fields-alert {
@@ -785,8 +804,11 @@
 	border-radius: 10px;
 	border: 1px solid #e8e4d8;
 	overflow: hidden;
-	transition: all 0.3s ease;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 	margin-bottom: 0.75rem;
+	/* Optimize for scroll performance */
+	contain: layout style paint;
+	transform: translateZ(0);
 }
 
 .form-field-group:hover {
@@ -865,6 +887,9 @@
 	flex-direction: column;
 	gap: 0.875rem;
 	animation: slideDown 0.3s ease-out;
+	/* Optimize for scroll performance */
+	will-change: contents;
+	transform: translateZ(0);
 }
 
 .field-group-hint {
@@ -1208,6 +1233,10 @@
 	overflow-y: auto;
 	position: relative;
 	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+	/* Optimize scroll performance */
+	will-change: scroll-position;
+	transform: translateZ(0);
+	-webkit-overflow-scrolling: touch;
 }
 
 .preview-content::-webkit-scrollbar {
@@ -1237,6 +1266,9 @@
 	line-height: 1.7;
 	color: #3d3529;
 	letter-spacing: 0.01em;
+	/* Optimize text rendering during scroll */
+	text-rendering: optimizeSpeed;
+	-webkit-font-smoothing: antialiased;
 }
 
 .page-footer {
