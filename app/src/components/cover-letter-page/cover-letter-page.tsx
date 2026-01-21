@@ -668,6 +668,7 @@ export function CoverLetterPage() {
 									id={variable.id}
 									placeholder="Type to search technologies..."
 									value={searchTerm}
+									autoComplete="off"
 									onChange={(e) => {
 										const newValue = e.target.value
 										setSearchTerms((prev) => ({
@@ -756,6 +757,7 @@ export function CoverLetterPage() {
 							placeholder={variable.placeholder}
 							required={variable.required}
 							rows={4}
+							autoComplete="off"
 							className={`form-textarea ${hasError ? 'input-error' : ''} ${isValid ? 'input-valid' : ''} ${isFilled ? 'input-filled' : ''}`}
 							aria-invalid={hasError}
 							aria-describedby={hasError ? `${variable.id}-error` : undefined}
@@ -783,7 +785,7 @@ export function CoverLetterPage() {
 							onChange={(e) => handleInputChange(variable.id, e.target.value)}
 							placeholder={variable.placeholder}
 							required={variable.required}
-							autoComplete="email"
+							autoComplete="off"
 							className={`form-input ${hasError ? 'input-error' : ''} ${isValid ? 'input-valid' : ''} ${isFilled ? 'input-filled' : ''}`}
 							aria-invalid={hasError}
 							aria-describedby={hasError ? `${variable.id}-error` : undefined}
@@ -811,7 +813,7 @@ export function CoverLetterPage() {
 							onChange={(e) => handleInputChange(variable.id, e.target.value)}
 							placeholder={variable.placeholder}
 							required={variable.required}
-							autoComplete="tel"
+							autoComplete="off"
 							className={`form-input ${hasError ? 'input-error' : ''} ${isValid ? 'input-valid' : ''} ${isFilled ? 'input-filled' : ''}`}
 							aria-invalid={hasError}
 							aria-describedby={hasError ? `${variable.id}-error` : undefined}
@@ -838,6 +840,7 @@ export function CoverLetterPage() {
 							value={value}
 							onChange={(e) => handleInputChange(variable.id, e.target.value)}
 							required={variable.required}
+							autoComplete="off"
 							className={`form-input ${hasError ? 'input-error' : ''} ${isValid ? 'input-valid' : ''} ${isFilled ? 'input-filled' : ''}`}
 							aria-invalid={hasError}
 							aria-describedby={hasError ? `${variable.id}-error` : undefined}
@@ -859,6 +862,7 @@ export function CoverLetterPage() {
 						onChange={(e) => handleInputChange(variable.id, e.target.value)}
 						placeholder={variable.placeholder}
 						required={variable.required}
+						autoComplete="off"
 						className="form-input"
 					/>
 				)
@@ -872,7 +876,7 @@ export function CoverLetterPage() {
 							onChange={(e) => handleInputChange(variable.id, e.target.value)}
 							placeholder={variable.placeholder}
 							required={variable.required}
-							autoComplete={variable.id === 'fullName' ? 'name' : variable.id === 'companyName' ? 'organization' : 'off'}
+							autoComplete="off"
 							className={`form-input ${hasError ? 'input-error' : ''} ${isValid ? 'input-valid' : ''} ${isFilled ? 'input-filled' : ''}`}
 							aria-invalid={hasError}
 							aria-describedby={hasError ? `${variable.id}-error` : undefined}
@@ -951,6 +955,7 @@ export function CoverLetterPage() {
 										fullName: e.target.value,
 									}))
 								}
+								autoComplete="off"
 								className="form-input"
 								placeholder="Enter your full name"
 							/>
@@ -969,6 +974,7 @@ export function CoverLetterPage() {
 										email: e.target.value,
 									}))
 								}
+								autoComplete="off"
 								className="form-input"
 								placeholder="Enter your email"
 							/>
@@ -987,6 +993,7 @@ export function CoverLetterPage() {
 										phone: e.target.value,
 									}))
 								}
+								autoComplete="off"
 								className="form-input"
 								placeholder="Enter your phone number"
 							/>
@@ -1004,6 +1011,7 @@ export function CoverLetterPage() {
 										techStack: e.target.value,
 									}))
 								}
+								autoComplete="off"
 								className="form-textarea"
 								placeholder="e.g., React, TypeScript, Node.js"
 								rows={3}

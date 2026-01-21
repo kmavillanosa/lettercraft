@@ -341,6 +341,66 @@ Best regards,
 			createdAt: new Date().toISOString(),
 			updatedAt: new Date().toISOString(),
 		},
+		{
+			id: 'resignation-polite',
+			name: 'Resignation Letter (Polite)',
+			description: 'Professional and courteous resignation letter. Maintains positive relationships and expresses gratitude.',
+			content: `Dear {{recipientName}},
+
+Please accept this letter as formal notification of my resignation from my position as {{position}} at {{companyName}}. My last day of employment will be {{date}}.
+
+I want to express my sincere gratitude for the opportunities I have had during my time at {{companyName}}. I have truly valued the experience, knowledge, and relationships I have gained here. This decision was not made lightly, but I believe it is the right step for my career development.
+
+I am committed to ensuring a smooth transition and will do everything possible to help during this period. I am happy to assist with training my replacement, documenting my current projects, and completing any outstanding work before my departure.
+
+Thank you again for the support and guidance you have provided. I wish {{companyName}} and the team continued success in the future.
+
+Sincerely,
+{{fullName}}
+{{email}}
+{{phone}}`,
+			variables: [
+				'fullName',
+				'email',
+				'phone',
+				'companyName',
+				'position',
+				'recipientName',
+				'date',
+			],
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString(),
+		},
+		{
+			id: 'resignation-impolite',
+			name: 'Resignation Letter (Impolite)',
+			description: 'Direct and blunt resignation letter. For when you want to make a clear statement without pleasantries.',
+			content: `Dear {{recipientName}},
+
+Effective immediately, I am resigning from my position as {{position}} at {{companyName}}. My last day will be {{date}}.
+
+I have made this decision after careful consideration of my professional circumstances and career goals. I will complete my current obligations until my departure date, but I will not be accepting any new assignments or responsibilities.
+
+Please arrange for the return of any company property in my possession. I expect to receive my final paycheck and any accrued benefits according to company policy.
+
+This resignation is final, and I will not be reconsidering my decision.
+
+Regards,
+{{fullName}}
+{{email}}
+{{phone}}`,
+			variables: [
+				'fullName',
+				'email',
+				'phone',
+				'companyName',
+				'position',
+				'recipientName',
+				'date',
+			],
+			createdAt: new Date().toISOString(),
+			updatedAt: new Date().toISOString(),
+		},
 	],
 	activeTemplateId: 'regular',
 }
